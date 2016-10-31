@@ -40,6 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'train',
     'station',
+    'shop',
+    'fooditem',
+    'stop',
+    'pnr',
+    'customer',
+    'review',
+    'order',
 ]
 
 MIDDLEWARE = [

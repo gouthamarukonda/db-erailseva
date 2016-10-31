@@ -1,6 +1,5 @@
 from django.db import models
 
-from datetime import datetime
 from station.models import Station
 
 # Create your models here.
