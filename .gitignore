@@ -1,4 +1,6 @@
 *~
 *.pyc
-myenv
 localsettings.py
+myenv
+xenv
+xutils
