@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.auth.models import User
 from train.models import Pnr
 from shop.models import Shop, Fooditem
 
@@ -9,9 +10,9 @@ from shop.models import Shop, Fooditem
 class Customer(models.Model):
 
 	cust_id = models.CharField("Customer Id", max_length = 10, primary_key = True)
-	cust_name = models.CharField("Customer Name", max_length = 30, null = True, blank = True)
-	email = models.CharField("Customer email", max_length = 50, null = True, blank = True)
-	mobile = models.IntegerField("Mobile Number", null = True, blank = True)
+	user = models.OneToOneField(User, null = True, on_delete = models.CASCADE)
+	# User: username, password, first_name, last_name, email
+	mobile = models.CharField("Mobile Number", max_length = 11, null = True, blank = True)
 	wallet_amount = models.IntegerField("Wallet Amount", null = True, blank = True)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
