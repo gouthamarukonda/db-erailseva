@@ -50,10 +50,14 @@ def user_login(request):
 		pass
 
 @csrf_exempt
+def user_logout(request):
+	logout(request)
+	return None
+
 def get_wallet_amount(request):
 
 	try:
-		qry = "select wallet_amount from customer where user_id =  %(int)s)"
+		qry = "select wallet_amount from customer where user_id =  %s"
 		resultset = pgExecQuery(qry, [request.user.id])
 		return JsonResponse({"status": True, "wallet_amount": resultset[0].wallet_amount})
 	except:
@@ -63,13 +67,13 @@ def get_wallet_amount(request):
 def set_wallet_amount(request):
 
 	if request.method == 'POST':
-		try:
-			reqdata = json.loads(request.body.decode("utf-8"))
-			qry = "update customer set wallet_amount = %(int)s where user_id = %(int)s)"
-			pgExecUpdate(qry, [reqdata["amount"], request.user.id])
-			return JsonResponse({"status": True})
-		except:
-			return JsonResponse({"status": False})
+		# try:
+		reqdata = json.loads(request.body.decode("utf-8"))
+		qry = "update customer set wallet_amount = %s where user_id = %s"
+		pgExecUpdate(qry, [reqdata["amount"], request.user.id])
+		return JsonResponse({"status": True})
+		# except:
+		# 	return JsonResponse({"status": False})
 
 	else:
 		return JsonResponse({"status": False, "msg": "Expected method = HTTP POST"})
