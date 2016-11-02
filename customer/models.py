@@ -16,7 +16,10 @@ class Customer(models.Model):
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
 	class Meta:
-		db_table = 'customers'
+		db_table = 'customer'
+
+	def __unicode__(self):
+		return unicode(self.user)
 
 class Order(models.Model):
 
@@ -41,21 +44,24 @@ class Order(models.Model):
 	)
 
 	pnr_no = models.ForeignKey(Pnr, blank = True, null = True, on_delete = models.CASCADE)
-	cust_id = models.ForeignKey(Customer, blank = True, null = True, on_delete = models.CASCADE)
-	shop_id = models.ForeignKey(Shop, blank = True, null = True, on_delete = models.CASCADE)
-	item_id = models.ForeignKey(Fooditem, blank = True, null = True, on_delete = models.CASCADE)
+	cust = models.ForeignKey(Customer, blank = True, null = True, on_delete = models.CASCADE)
+	shop = models.ForeignKey(Shop, blank = True, null = True, on_delete = models.CASCADE)
+	item = models.ForeignKey(Fooditem, blank = True, null = True, on_delete = models.CASCADE)
 	status = models.CharField("Status of Order", choices = STATUS_CHOICES, max_length = 1, blank = True, null = True)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
 	class Meta:
-		db_table = 'orders'
+		db_table = 'order'
+
+	def __unicode__(self):
+		return "PNR: " + unicode(pnr_no)
 
 class Review(models.Model):
 
-	cust_id = models.ForeignKey(Customer, blank = True, null = True, on_delete = models.CASCADE)
-	shop_id = models.ForeignKey(Shop, blank = True, null = True, on_delete = models.CASCADE)
+	cust = models.ForeignKey(Customer, blank = True, null = True, on_delete = models.CASCADE)
+	shop = models.ForeignKey(Shop, blank = True, null = True, on_delete = models.CASCADE)
 	msg = models.CharField("Message", max_length = 1000, blank = True, null = True)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
 	class Meta:
-		db_table = 'reviews'
+		db_table = 'review'

@@ -12,4 +12,7 @@ class Station(models.Model):
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
 	class Meta:
-		db_table = 'stations'
+		db_table = 'station'
+
+	def __unicode__(self):
+		return unicode(self.station_name)
