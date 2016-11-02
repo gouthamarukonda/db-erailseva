@@ -9,7 +9,7 @@ from shop.models import Shop, Fooditem
 
 class Customer(models.Model):
 
-	user = models.OneToOneField(User, primary_key = True, on_delete = models.CASCADE)
+	user = models.OneToOneField(User, primary_key = True, db_column = 'user_id', on_delete = models.CASCADE)
 	# User: *username, *password, first_name, last_name, *email
 	mobile = models.CharField("Mobile Number", max_length = 11, null = True, blank = True)
 	wallet_amount = models.IntegerField("Wallet Amount", blank = True, default = 0)
@@ -43,10 +43,11 @@ class Order(models.Model):
 		(STATUS_CANCELLED_BY_VENDOR, 'Cancelled by Vendor'),
 	)
 
-	pnr_no = models.ForeignKey(Pnr, blank = True, null = True, on_delete = models.CASCADE)
-	cust = models.ForeignKey(Customer, blank = True, null = True, on_delete = models.CASCADE)
-	shop = models.ForeignKey(Shop, blank = True, null = True, on_delete = models.CASCADE)
-	item = models.ForeignKey(Fooditem, blank = True, null = True, on_delete = models.CASCADE)
+	pnr = models.ForeignKey(Pnr, blank = True, null = True, db_column = 'pnr_no', on_delete = models.CASCADE)
+	cust = models.ForeignKey(Customer, blank = True, null = True, db_column = 'cust_id', on_delete = models.CASCADE)
+	shop = models.ForeignKey(Shop, blank = True, null = True, db_column = 'shop_id', on_delete = models.CASCADE)
+	item = models.ForeignKey(Fooditem, blank = True, null = True, db_column = 'item_id', on_delete = models.CASCADE)
+	quantity = models.IntegerField("Quantity", blank = True, null = True)
 	status = models.CharField("Status of Order", choices = STATUS_CHOICES, max_length = 1, blank = True, null = True)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
@@ -58,8 +59,8 @@ class Order(models.Model):
 
 class Review(models.Model):
 
-	cust = models.ForeignKey(Customer, blank = True, null = True, on_delete = models.CASCADE)
-	shop = models.ForeignKey(Shop, blank = True, null = True, on_delete = models.CASCADE)
+	cust = models.ForeignKey(Customer, blank = True, null = True, db_column = 'cust_id', on_delete = models.CASCADE)
+	shop = models.ForeignKey(Shop, blank = True, null = True, db_column = 'shop_id', on_delete = models.CASCADE)
 	msg = models.CharField("Message", max_length = 1000, blank = True, null = True)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 

@@ -8,7 +8,7 @@ class Shop(models.Model):
 
 	shop_id = models.CharField("Shop id", max_length = 7, primary_key = True)
 	shop_name = models.CharField("Shop Name",max_length = 60, blank = True, null = True)
-	station = models.ForeignKey(Station, blank = True, null = True, on_delete = models.CASCADE)
+	station = models.ForeignKey(Station, blank = True, null = True, db_column = 'station_id', on_delete = models.CASCADE)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
 	class Meta:
@@ -21,7 +21,7 @@ class Fooditem(models.Model):
 
 	item_id = models.CharField("Item ID", max_length = 4, primary_key = True)
 	item_name = models.CharField("Station Name", max_length = 60, null = True, blank = True)
-	shop = models.ForeignKey(Shop, blank = True, null = True, on_delete = models.CASCADE)
+	shop = models.ForeignKey(Shop, blank = True, null = True, db_column = 'shop_id', on_delete = models.CASCADE)
 	cost_per_plate = models.IntegerField("Cost per Plate", blank = True, null = True)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
