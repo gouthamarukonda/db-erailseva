@@ -9,11 +9,10 @@ from shop.models import Shop, Fooditem
 
 class Customer(models.Model):
 
-	cust_id = models.CharField("Customer Id", max_length = 10, primary_key = True)
-	user = models.OneToOneField(User, null = True, on_delete = models.CASCADE)
-	# User: username, password, first_name, last_name, email
+	user = models.OneToOneField(User, primary_key = True, on_delete = models.CASCADE)
+	# User: *username, *password, first_name, last_name, *email
 	mobile = models.CharField("Mobile Number", max_length = 11, null = True, blank = True)
-	wallet_amount = models.IntegerField("Wallet Amount", null = True, blank = True)
+	wallet_amount = models.IntegerField("Wallet Amount", blank = True, default = 0)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
 	class Meta:
