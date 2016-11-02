@@ -53,7 +53,7 @@ class Order(models.Model):
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
 	class Meta:
-		db_table = 'order'
+		db_table = 'orders'
 
 	def __unicode__(self):
 		return "PNR: " + unicode(pnr_no)

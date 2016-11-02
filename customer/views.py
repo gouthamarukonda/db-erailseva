@@ -89,7 +89,7 @@ def place_order(request):
 			resp = {"status": True}
 			resp["order_ids"] = []
 			for item in reqdata["items"]:
-				qry = "insert into order(pnr_no, cust_id, shop_id, item_id, quantity) values(%s,%s,%s,%s,%s) returning order_id"
+				qry = "insert into orders(pnr_no, cust_id, shop_id, item_id, quantity) values(%s,%s,%s,%s,%s) returning order_id"
 				resultset = pgExecQuery(qry, [pnrno, request.user.id, shop_id, item["id"], item["quantity"]])
 				resp["order_ids"].append(resultset[0].order_id)
 			return JsonResponse(resp)
@@ -123,7 +123,7 @@ def cancel_order(request):
 	if request.method == 'POST':
 		try:
 			reqdata = json.loads(request.body.decode("utf-8"))
-			qry = "update order set status = %s where order_id = %s"
+			qry = "update orders set status = %s where order_id = %s"
 			pgExecUpdate(qry, [Order.STATUS_CANCELLED, reqdata["order_id"]])
 			return JsonResponse({"status": True})
 		except:
@@ -145,7 +145,7 @@ def get_prev_orders(request):
 					"shop_name": order.shop.shop_name,
 					"item_name": order.item.item_name,
 					"quantity": order.quantity,
-					"status": order.get_status_display
+					"status": order.get_status_display()
 				})
 		return JsonResponse(resp)
 	except:
