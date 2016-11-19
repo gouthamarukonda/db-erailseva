@@ -78,13 +78,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'erailseva.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-if os.environ['DJANGO_SETTINGS_MODULE'] == __file__:
-    import localsettings
-    DATABASES = localsettings.DATABASES
-
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
