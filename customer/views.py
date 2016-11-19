@@ -26,7 +26,7 @@ def register(request):
 			customer = Customer(mobile = reqdata["mobile"])
 			customer.user = user
 			customer.save()
-			return JsonResponse({"status": True})
+			return JsonResponse({"status": True, "msg": "Registered Successfully"})
 		except:
 			return JsonResponse({"status": False})
 
@@ -39,10 +39,12 @@ def user_login(request):
 	if request.method == 'POST':
 		try:
 			reqdata = json.loads(request.body.decode("utf-8"))
+			print reqdata
 			user = authenticate(username = reqdata["cust_id"], password = reqdata["password"])
 			if user:
 				login(request, user)
 				return JsonResponse({"status": True})
+			return JsonResponse({"status": False, "msg": "Invalid Credentials"})
 		except:
 			return JsonResponse({"status": False})
 
@@ -59,19 +61,23 @@ def get_wallet_amount(request):
 	try:
 		qry = "select wallet_amount from customer where user_id =  %s"
 		resultset = pgExecQuery(qry, [request.user.id])
+		print "uid: ", request.user.id
 		return JsonResponse({"status": True, "wallet_amount": resultset[0].wallet_amount})
 	except:
 		return JsonResponse({"status": False})
 
 @csrf_exempt
-def set_wallet_amount(request):
+def add_wallet_amount(request):
 
 	if request.method == 'POST':
 		try:
 			reqdata = json.loads(request.body.decode("utf-8"))
+			qry = "select wallet_amount from customer where user_id =  %s"
+			resultset = pgExecQuery(qry, [request.user.id])
+			wallet_amount = resultset[0].wallet_amount + reqdata["amount"]
 			qry = "update customer set wallet_amount = %s where user_id = %s"
-			pgExecUpdate(qry, [reqdata["amount"], request.user.id])
-			return JsonResponse({"status": True})
+			pgExecUpdate(qry, [wallet_amount, request.user.id])
+			return JsonResponse({"status": True, "wallet_amount": wallet_amount})
 		except:
 			return JsonResponse({"status": False})
 

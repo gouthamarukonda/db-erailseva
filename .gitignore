@@ -1,6 +1,9 @@
+.gitignore
 *~
 *.pyc
 localsettings.py
 myenv
 xenv
 xutils
+ers.sublime-project
+ers.sublime-workspace
