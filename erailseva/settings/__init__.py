@@ -26,7 +26,7 @@ SECRET_KEY = 'irid^1ztte_4i)7^3$hz^o6f(^12ccovfe^@fdv^bqk^scd@43'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'erailseva.herokuapp.com']
 
 
 # Application definition
@@ -82,7 +82,8 @@ WSGI_APPLICATION = 'erailseva.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = localsettings.DATABASES
+if os.environ['DJANGO_SETTINGS_MODULE'] == __file__:
+    DATABASES = localsettings.DATABASES
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
