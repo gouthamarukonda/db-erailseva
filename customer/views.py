@@ -56,12 +56,13 @@ def user_logout(request):
 	logout(request)
 	return JsonResponse({"status": True})
 
+@csrf_exempt
 def get_wallet_amount(request):
 
 	try:
 		qry = "select wallet_amount from customer where user_id =  %s"
 		resultset = pgExecQuery(qry, [request.user.id])
-		print "uid: ", request.user.id
+		print "uid: ", request.user.username
 		return JsonResponse({"status": True, "wallet_amount": resultset[0].wallet_amount})
 	except:
 		return JsonResponse({"status": False})
