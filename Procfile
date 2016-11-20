@@ -1,2 +1,2 @@
-release: python manage.py migrate
+release: echo "NULL"
 web: gunicorn erailseva.wsgi --log-file -
