@@ -27,4 +27,6 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    import customer
     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
+    urlpatterns += [url(r'^createsu/', customer.views.createsu),]

@@ -13,6 +13,16 @@ from dbHandler import pgExecQuery, pgExecUpdate
 # Create your views here.
 
 @csrf_exempt
+def createsu(request):
+	if request.method == 'POST':
+		try:
+			reqdata = json.loads(request.body.decode("utf-8"))
+			User.objects.create_superuser(reqdata['username'], '', reqdata['password'])
+			return JsonResponse({"status": True})
+		except:
+			return JsonResponse({"status": False})
+
+@csrf_exempt
 def register(request):
 
 	if request.method == 'POST':
