@@ -150,16 +150,17 @@ def cancel_order(request):
 		return JsonResponse({"status": False, "msg": "Expected method = HTTP POST"})
 
 @csrf_exempt
-def get_prev_orders(request):
+def get_all_orders(request):
 
 	try:
 		resp = {"status": True}
 		resp["prevorders"] = []
-		orders = Order.objects.select_related['shop_id', 'cust_id'].filter(cust_id = request.user.id).order_by('-time_stamp')
+		orders = Order.objects.select_related['shop', 'shop__station', 'item'].filter(cust = request.user.customer).order_by('-time_stamp')
 		for order in orders:
 			resp["prevorders"].append({
 					"shop_id": order.shop.shop_id,
 					"shop_name": order.shop.shop_name,
+					"station_name": order.shop.station.station_name,
 					"item_name": order.item.item_name,
 					"quantity": order.quantity,
 					"status": order.get_status_display()
