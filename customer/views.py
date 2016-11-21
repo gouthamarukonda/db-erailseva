@@ -49,7 +49,6 @@ def user_login(request):
 	if request.method == 'POST':
 		try:
 			reqdata = json.loads(request.body.decode("utf-8"))
-			print reqdata
 			user = authenticate(username = reqdata["cust_id"], password = reqdata["password"])
 			if user:
 				login(request, user)
@@ -72,7 +71,6 @@ def get_wallet_amount(request):
 	try:
 		qry = "select wallet_amount from customer where user_id =  %s"
 		resultset = pgExecQuery(qry, [request.user.id])
-		print "uid: ", request.user.username
 		return JsonResponse({"status": True, "wallet_amount": resultset[0].wallet_amount})
 	except:
 		return JsonResponse({"status": False})
@@ -83,7 +81,7 @@ def add_wallet_amount(request):
 	if request.method == 'POST':
 		try:
 			reqdata = json.loads(request.body.decode("utf-8"))
-			qry = "select wallet_amount from customer where user_id =  %s"
+			qry = "select wallet_amount from customer where user_id = %s"
 			resultset = pgExecQuery(qry, [request.user.id])
 			wallet_amount = resultset[0].wallet_amount + reqdata["amount"]
 			qry = "update customer set wallet_amount = %s where user_id = %s"
@@ -106,8 +104,8 @@ def place_order(request):
 			resp = {"status": True}
 			resp["order_ids"] = []
 			for item in reqdata["items"]:
-				qry = "insert into orders(pnr_no, cust_id, shop_id, item_id, quantity) values(%s,%s,%s,%s,%s) returning order_id"
-				resultset = pgExecQuery(qry, [pnrno, request.user.id, shop_id, item["id"], item["quantity"]])
+				qry = "insert into orders(pnr_no, cust_id, shop_id, item_id, quantity, status) values(%s,%s,%s,%s,%s,%s) returning order_id"
+				resultset = pgExecQuery(qry, [pnrno, request.user.id, shop_id, item["id"], item["quantity"], Order.STATUS_PENDING])
 				resp["order_ids"].append(resultset[0].order_id)
 			return JsonResponse(resp)
 		except:
@@ -155,10 +153,10 @@ def get_all_orders(request):
 	try:
 		resp = {"status": True}
 		resp["prevorders"] = []
-		orders = Order.objects.select_related['shop', 'shop__station', 'item'].filter(cust = request.user.customer).order_by('-time_stamp')
+		orders = Order.objects.select_related['shop', 'shop__user', 'shop__station', 'item'].filter(cust = request.user.customer).order_by('-time_stamp')
 		for order in orders:
 			resp["prevorders"].append({
-					"shop_id": order.shop.shop_id,
+					"shop_id": order.shop.user.username,
 					"shop_name": order.shop.shop_name,
 					"station_name": order.shop.station.station_name,
 					"item_name": order.item.item_name,

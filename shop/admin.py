@@ -6,10 +6,10 @@ from .models import Shop, Fooditem
 
 
 class ShopAdmin(admin.ModelAdmin):
-	list_display = ('shop_id', 'shop_name', 'station_id')
+	list_display = ('user', 'shop_name', 'station', 'rating')
 
 class FooditemAdmin(admin.ModelAdmin):
-	list_display = ('item_id', 'item_name', 'shop_id','cost_per_plate')
+	list_display = ('item_id', 'item_name', 'shop', 'cost_per_plate')
 
 admin.site.register(Shop, ShopAdmin)
 admin.site.register(Fooditem, FooditemAdmin)
