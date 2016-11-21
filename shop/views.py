@@ -17,7 +17,7 @@ def get_shops_at_station(request):
 	if request.method == 'POST':
 		try:
 			reqdata = json.loads(request.body.decode("utf-8"))
-			qry += "select shop_id, shop_name from shop where station_id = %s"
+			qry = "select shop_id, shop_name from shop where station_id = %s"
 			resultset = pgExecQuery(qry, [reqdata["station_id"]])
 			resp = {"status": True}
 			resp["shops"] = []

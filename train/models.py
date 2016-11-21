@@ -33,6 +33,9 @@ class Stop(models.Model):
 	class Meta:
 		db_table = 'stop'
 
+	def __unicode__(self):
+		return unicode(self.train.train_name + " : " + self.station.station_name)
+
 class Pnr(models.Model):
 
 	pnr_no = models.CharField("Pnr No", max_length = 9, primary_key = True)
@@ -45,3 +48,6 @@ class Pnr(models.Model):
 
 	class Meta:
 		db_table = 'pnr'
+
+	def __unicode__(self):
+		return unicode(self.pnr_no + " : " + self.train.train_name)

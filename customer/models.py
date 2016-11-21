@@ -67,3 +67,6 @@ class Review(models.Model):
 
 	class Meta:
 		db_table = 'review'
+
+	def __unicode__(self):
+		return unicode("Shop : " + self.shop.shop_name)
