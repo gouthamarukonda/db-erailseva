@@ -11,14 +11,14 @@ from customer.models import Customer
 from shop.models import Shop
 from station.models import Station
 
+# Create superuser
 
-superuser  = User(username = "admin")
+superuser = User(username = "admin")
 superuser.set_password("admin12345")
 superuser.is_superuser = True
 superuser.is_staff = True
 superuser.is_active = True
 superuser.save()
-
 
 # Create users for customers, shops
 

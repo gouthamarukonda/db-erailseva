@@ -99,7 +99,7 @@ def place_order(request):
 	if request.method == 'POST':
 		try:
 			reqdata = json.loads(request.body.decode("utf-8"))
-			pnrno = reqdata["pnr_no"]
+			pnrno = reqdata["pnr"]
 			shop_id = reqdata["shop_id"]
 			resp = {"status": True}
 			resp["order_ids"] = []
@@ -153,10 +153,10 @@ def get_all_orders(request):
 	try:
 		resp = {"status": True}
 		resp["prevorders"] = []
-		orders = Order.objects.select_related['shop', 'shop__user', 'shop__station', 'item'].filter(cust = request.user.customer).order_by('-time_stamp')
+		orders = Order.objects.select_related('shop', 'shop__station', 'item').filter(cust = request.user.customer).order_by('-time_stamp')
 		for order in orders:
 			resp["prevorders"].append({
-					"shop_id": order.shop.user.username,
+					"shop_id": order.shop_id,
 					"shop_name": order.shop.shop_name,
 					"station_name": order.shop.station.station_name,
 					"item_name": order.item.item_name,
