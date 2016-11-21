@@ -36,7 +36,7 @@ def get_items_at_shop(request):
 	if request.method == 'POST':
 		try:
 			reqdata = json.loads(request.body.decode("utf-8"))
-			qry += "select item_id, item_name, cost_per_plate from fooditem where shop_id = %s"
+			qry = "select item_id, item_name, cost_per_plate from fooditem where shop_id = %s"
 			resultset = pgExecQuery(qry, [reqdata["shop_id"]])
 			resp = {"status": True}
 			resp["items"] = []
