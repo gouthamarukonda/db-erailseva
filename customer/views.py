@@ -31,7 +31,7 @@ def register(request):
 			user = User(username = reqdata["cust_id"])
 			user.set_password(reqdata["password"])
 			user.first_name = reqdata["cust_name"]
-			user.email = reqdata["email"]			
+			user.email = reqdata["email"]
 			user.save()
 			customer = Customer(mobile = reqdata["mobile"])
 			customer.user = user
