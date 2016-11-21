@@ -152,10 +152,10 @@ def get_all_orders(request):
 
 	try:
 		resp = {"status": True}
-		resp["prevorders"] = []
+		resp["allorders"] = []
 		orders = Order.objects.select_related('shop', 'shop__station', 'item').filter(cust = request.user.customer).order_by('-time_stamp')
 		for order in orders:
-			resp["prevorders"].append({
+			resp["allorders"].append({
 					"shop_id": order.shop_id,
 					"shop_name": order.shop.shop_name,
 					"station_name": order.shop.station.station_name,
