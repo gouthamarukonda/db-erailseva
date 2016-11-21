@@ -56,7 +56,7 @@ class Order(models.Model):
 		db_table = 'orders'
 
 	def __unicode__(self):
-		return "PNR: " + unicode(pnr_no)
+		return "PNR: " + unicode(pnr)
 
 class Review(models.Model):
 
