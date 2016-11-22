@@ -93,7 +93,7 @@
     $('#form1').submit(function(e)
     {
         e.preventDefault();
-        $('#msg').html('Waiting For Response...');
+        $('#msg').html('<a class="color:blue;"><b>Waiting For Response...</b></a>');
         $.ajax({
             type: 'POST',
             url: '/shop/login/',

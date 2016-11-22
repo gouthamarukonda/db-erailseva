@@ -5,3 +5,111 @@ LOG:  redo is not required
 LOG:  MultiXact member wraparound protections are now enabled
 LOG:  autovacuum launcher started
 LOG:  database system is ready to accept connections
+LOG:  received fast shutdown request
+LOG:  aborting any active transactions
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2016-11-22 07:53:37 IST
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  autovacuum launcher started
+LOG:  database system is ready to accept connections
+ERROR:  column "numratings" of relation "shop" does not exist at character 95
+STATEMENT:  UPDATE "shop" SET "user_id" = 39, "shop_name" = 'sdas', "station_id" = '00003', "rating" = 0, "numratings" = 0, "time_stamp" = '2016-11-22T14:31:28.642140+00:00'::timestamptz WHERE "shop"."shop_id" = 'asd'
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (39)
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (39) LIMIT 21
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (39) LIMIT 21
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (39) LIMIT 21
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (39) LIMIT 21
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (39) LIMIT 21
+ERROR:  column "numratings" of relation "shop" does not exist at character 101
+STATEMENT:  UPDATE "shop" SET "user_id" = 40, "shop_name" = 'sdnkf,msdl', "station_id" = '00003', "rating" = 0, "numratings" = 0, "time_stamp" = '2016-11-22T14:32:59.423963+00:00'::timestamptz WHERE "shop"."shop_id" = 'safasll'
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (40)
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (40) LIMIT 21
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (40) LIMIT 21
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (40) LIMIT 21
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (40) LIMIT 21
+ERROR:  column shop.numratings does not exist at character 102
+STATEMENT:  SELECT "shop"."user_id", "shop"."shop_id", "shop"."shop_name", "shop"."station_id", "shop"."rating", "shop"."numratings", "shop"."time_stamp" FROM "shop" WHERE "shop"."user_id" IN (40) LIMIT 21
+ERROR:  duplicate key value violates unique constraint "auth_user_username_key"
+DETAIL:  Key (username)=(10001) already exists.
+STATEMENT:  INSERT INTO "auth_user" ("password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined") VALUES ('pbkdf2_sha256$30000$mzvbVkfdeUrJ$dhHg4pKqfZZKafgeXlGSthmx/zboIvj23AHrweQZmdo=', NULL, false, '10001', 'TESTCUSTOMER1', '', '', false, true, '2016-11-22T14:35:51.581783+00:00'::timestamptz) RETURNING "auth_user"."id"
+ERROR:  duplicate key value violates unique constraint "auth_user_username_key"
+DETAIL:  Key (username)=(00001) already exists.
+STATEMENT:  INSERT INTO "auth_user" ("password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined") VALUES ('pbkdf2_sha256$30000$pfMCmFmuxW0g$BmvGwIwUAmOlMHKxw7VgnNbP+/AH89TmZ/sLZz4MS9Y=', NULL, false, '00001', '00001', '', '', false, true, '2016-11-22T14:42:48.656329+00:00'::timestamptz) RETURNING "auth_user"."id"
+ERROR:  duplicate key value violates unique constraint "auth_user_username_key"
+DETAIL:  Key (username)=(00001) already exists.
+STATEMENT:  INSERT INTO "auth_user" ("password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined") VALUES ('pbkdf2_sha256$30000$YuOfb15F4N2T$fpCIwR8crmboSeOzjD9rS8tBK1ZQUuNJXR4RGxQ6Mmw=', NULL, false, '00001', '00001', '', '', false, true, '2016-11-22T14:44:47.434021+00:00'::timestamptz) RETURNING "auth_user"."id"
+ERROR:  duplicate key value violates unique constraint "auth_user_username_key"
+DETAIL:  Key (username)=(1111) already exists.
+STATEMENT:  INSERT INTO "auth_user" ("password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined") VALUES ('pbkdf2_sha256$30000$U6T5XAheweoZ$y1x6vDCQ0MOWnLbqth/W8t3vAABg0YrGAL2Nwn9WQ08=', NULL, false, '1111', '1111', '', '', false, true, '2016-11-22T14:58:56.472990+00:00'::timestamptz) RETURNING "auth_user"."id"
+ERROR:  syntax error at or near "order" at character 15
+STATEMENT:  select * from order
+ERROR:  relation "item" does not exist at character 15
+STATEMENT:  select * from item
+	
+ERROR:  syntax error at or near "order" at character 15
+STATEMENT:  select * from order
+	
+ERROR:  syntax error at or near "order" at character 15
+STATEMENT:  select * from order
+	
+ERROR:  syntax error at or near "0" at character 99
+STATEMENT:  insert into orders values ('0001', '1', '0' , now() , '10001' , '00001' , '000000000' , '00001 , '0')
+ERROR:  insert or update on table "orders" violates foreign key constraint "orders_cust_id_5b406bc0_fk_customer_user_id"
+DETAIL:  Key (cust_id)=(10001) is not present in table "customer".
+STATEMENT:  insert into orders values ('0001', '1', '0' , now() , '10001' , '00001' , '000000000' , '00001' , '0' )
+ERROR:  insert or update on table "orders" violates foreign key constraint "orders_cust_id_5b406bc0_fk_customer_user_id"
+DETAIL:  Key (cust_id)=(10002) is not present in table "customer".
+STATEMENT:  insert into orders values ('0001', '1', '0' , now() , '10002' , '00001' , '000000000' , '00001' , '0' )
+ERROR:  syntax error at or near "'status'" at character 19
+STATEMENT:  update orders set 'status' = '1' where order_id = '1' 
+ERROR:  syntax error at or near "pnr" at character 26
+STATEMENT:  select * from pnr
+	update pnr set train_start_date = "2017-01-30 06:30:00+05:30" where pnr = 000000001
+ERROR:  syntax error at or near "'pnr'" at character 26
+STATEMENT:  select * from pnr
+	update 'pnr' set train_start_date = "2017-01-30 06:30:00+05:30" where pnr = 000000001
+ERROR:  syntax error at or near "'pnr'" at character 27
+STATEMENT:  select * from pnr;
+	update 'pnr' set train_start_date = "2017-01-30 06:30:00+05:30" where pnr = 000000001
+ERROR:  syntax error at or near "'pnr'" at character 8
+STATEMENT:  update 'pnr' set 'train_start_date' = "2017-01-30 06:30:00+05:30" where pnr = 000000001
+ERROR:  syntax error at or near "'pnr'" at character 8
+STATEMENT:  update 'pnr' set 'train_start_date' = "2017-01-30 06:30:00+05:30" where pnr = 000000001
+ERROR:  syntax error at or near "'pnr'" at character 8
+STATEMENT:  update 'pnr' set 'train_start_date' = "2017-01-30 06:30:00+05:30" where pnr = 000000001
+ERROR:  syntax error at or near "'pnr'" at character 8
+STATEMENT:  update 'pnr' set 'train_start_date' = "2017-01-30 06:30:00+05:30" where pnr = 000000001
+ERROR:  syntax error at or near "'train_start_date'" at character 18
+STATEMENT:  update "pnr" set 'train_start_date' = "2017-01-30 06:30:00+05:30" where pnr = 000000001
+ERROR:  operator does not exist: pnr = integer at character 77
+HINT:  No operator matches the given name and argument type(s). You might need to add explicit type casts.
+STATEMENT:  update "pnr" set "train_start_date" = '2017-01-30 06:30:00+05:30' where pnr = 000000001
+ERROR:  input of anonymous composite types is not implemented at character 79
+STATEMENT:  update "pnr" set "train_start_date" = '2017-01-30 06:30:00+05:30' where pnr = '000000001'
+ERROR:  column "day_of_journey" does not exist at character 8
+STATEMENT:  select day_of_journey where station_id = '00001'
+ERROR:  column "day_of_journey" does not exist at character 8
+STATEMENT:  select day_of_journey where station_id = '00001'
+ERROR:  column "day_of_journey" does not exist at character 8
+STATEMENT:  select day_of_journey where station_id = '00001'
+ERROR:  column "day_of_journey" does not exist at character 8
+STATEMENT:  select day_of_journey where station_id = '00001'
+ERROR:  column "day_of_journey" does not exist at character 8
+STATEMENT:  select day_of_journey where station_id = '00001'
+ERROR:  column "day_of_journey" does not exist at character 8
+STATEMENT:  select day_of_journey from station where station_id = '00001'
+ERROR:  column "day_of_journey" does not exist at character 8
+STATEMENT:  select day_of_journey from station where station_id = '00001'

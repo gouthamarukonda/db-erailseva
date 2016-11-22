@@ -90,7 +90,7 @@
                 <button id="submitbutton" class="btn waves-effect waves-light" align="center" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:0%" type="button" name="action">Register
                 <i class="material-icons right">send</i>
                 </button><br>
-                <div id="msg" style="color:rbg(33,150,243,1);font-weight:400;"></div>
+                <div id="msg"></div>
 
                 <div class="row">
                     <div class="input-field col s12">
@@ -135,60 +135,9 @@
         });
     </script>
 
-    <script>
-        window.jQuery || document.write('<script src="{% static 'shop/js/vendor/jquery-1.9.1.min.js' %}"><\/script>');
-    </script>
+  
     <script src="{% static 'shop/js/main.js' %}"></script>
    <!-- chartist -->
-    <script type="text/javascript" src="{% static 'shop/js/vendor/jquery.validate.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'shop/js/vendor/additional-methods.min.js' %}"></script>
-
-    <script type="text/javascript">
-    $("#form1").validate({
-        rules: {
-            username: {
-                required: true,
-                minlength: 5
-            },
-            shop_name: {
-                required: true
-            },
-            station_name: {
-                required: true
-            },
-            password: {
-                required: true,
-                minlength: 5
-            },
-            password_again: {
-                equalto: "#password"
-            }
-        },
-        //For custom messages
-        messages: {
-            username:{
-                required: "Please Enter a username",
-                minlength: "Enter at least 5 characters"
-            },
-            password:{
-                required: "Please Enter the password",
-                minlength: "Password should be atleast 5 characters"
-            },
-            password_again:{
-                equalto: "Passwords Do Mot Match"
-            }
-        },
-        errorElement : 'div',
-        errorPlacement: function(error, element) {
-            var placement = $(element).data('error');
-            if (placement) {
-                error.insertAfter(element);
-            } else {
-                error.insertAfter(element);
-            }
-        }
-        });
-    </script>
 
     <link rel='stylesheet' href='https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css'>
     <script type="text/javascript">
@@ -232,7 +181,7 @@
             }
             if(!found)
             {
-                $("#msg").html("<a class='color:blue;'><b>Choose a Station from Available Stations</b></a>");
+                $("#msg").html("<a style=\"color:red;\"><b>Choose a Station only from Available Stations</b></a>");
                 return;
             }
             $('#msg').html('Waiting For Response...');
@@ -241,12 +190,11 @@
                 url: '/shop/register/',
                 data: $("#form1").serialize(),
                 success: function(response) {
-                    $('#msg').html(response.msg);
+                    $('#msg').html("<a style='color:red;'><b>" + response.msg + "</b></a>");
                 }
             });
         });
     </script>
-
 </body>
 
 </html>
