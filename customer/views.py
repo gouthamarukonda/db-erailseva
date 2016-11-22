@@ -105,11 +105,12 @@ def place_order(request):
 			reqdata = json.loads(request.body.decode("utf-8"))
 			pnrno = reqdata["pnr"]
 			shop_id = reqdata["shop_id"]
+			paymode = reqdata["paymode"]
 			resp = {"status": True}
 			resp["order_ids"] = []
 			for item in reqdata["items"]:
-				qry = "insert into orders(pnr_no, cust_id, shop_id, item_id, quantity, status, time_stamp) values (%s,%s,%s,%s,%s,%s,now()) returning order_id"
-				resultset = pgExecQuery(qry, [pnrno, request.user.id, shop_id, item["id"], item["quantity"], Order.STATUS_PENDING])
+				qry = "insert into orders(pnr_no, cust_id, shop_id, item_id, quantity, status, paymode, time_stamp) values (%s,%s,%s,%s,%s,%s,%s,now()) returning order_id"
+				resultset = pgExecQuery(qry, [pnrno, request.user.id, shop_id, item["id"], item["quantity"], Order.STATUS_PENDING, paymode])
 				resp["order_ids"].append(resultset[0].order_id)
 			return JsonResponse(resp)
 		except:
@@ -156,17 +157,27 @@ def get_all_orders(request):
 
 	try:
 		resp = {"status": True}
-		resp["allorders"] = []
+		resp["ongoing_orders"] = []
+		resp["completed_orders"] = []
 		orders = Order.objects.select_related('shop', 'shop__station', 'item').filter(cust = request.user.customer).order_by('-time_stamp')
 		for order in orders:
-			resp["allorders"].append({
-					"shop_id": order.shop_id,
-					"shop_name": order.shop.shop_name,
-					"station_name": order.shop.station.station_name,
-					"item_name": order.item.item_name,
-					"quantity": order.quantity,
-					"status": order.get_status_display()
-				})
+			odict = {
+				"shop_id": order.shop_id,
+				"shop_name": order.shop.shop_name,
+				"station_name": order.shop.station.station_name,
+				"item_name": order.item.item_name,
+				"quantity": order.quantity,
+				"status": order.get_status_display(),
+				"showrb": False,
+				"showcb": False,
+			}
+			if order.status in [Order.STATUS_DELIVERED, Order.STATUS_CANCELLED, Order.STATUS_CANCELLED_BY_VENDOR]:
+				if order.status == Order.STATUS_DELIVERED:
+					odict["showrb"] = True
+				resp["completed_orders"].append(odict)
+			else:
+				odict["showcb"] = True
+				resp["ongoing_orders"].append(odict)
 		return JsonResponse(resp)
 	except:
 		return JsonResponse({"status": False})
@@ -179,6 +190,15 @@ def post_review(request):
 			reqdata = json.loads(request.body.decode("utf-8"))
 			qry = "insert into review(cust_id, shop_id, msg) values(%s, %s, %s)"
 			pgExecUpdate(qry, [request.user.id, reqdata["shop_id"], reqdata["msg"]])
+			posted_rating = reqdata["rating"]
+			if posted_rating != 0:
+				qry = "select rating, numratings from shop where shop_id=%s"
+				resultset = pgExecQuery(qry, [reqdata["shop_id"]])
+				_r = resultset[0].rating
+				_nr = resultset[0].numratings
+				new_rating = (_r * _nr + posted_rating) / (1 + _nr)
+				qry = "update shop set rating = %s, numrating = %s where shop_id = %s"
+				pgExecUpdate(qry, [new_rating, 1 + _nr, reqdata["shop_id"]])
 			return JsonResponse({"status": True})
 		except:
 			return JsonResponse({"status": False})

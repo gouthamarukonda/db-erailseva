@@ -88,6 +88,7 @@ for sdata in sample_shop_data:
 	station = Station.objects.get(station_id = sdata[2])
 	shop = Shop(user = user, shop_id = sdata[0], shop_name = sdata[1], station = station)
 	shop.rating = 0
+	shop.numratings = 0
 	shop.time_stamp = datetime.now()
 	shop.save()
 

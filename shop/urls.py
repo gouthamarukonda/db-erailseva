@@ -8,6 +8,7 @@ urlpatterns = [
 
 urlpatterns += [
 	url(r'^register/$', views2.shop_register),
+	url(r'^getallstations/$', views2.get_all_stations),
 	url(r'^login/$', views2.user_login),	
 	url(r'^home/$', views2.orders_page),
 ]

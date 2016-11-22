@@ -43,12 +43,21 @@ class Order(models.Model):
 		(STATUS_CANCELLED_BY_VENDOR, 'Cancelled by Vendor'),
 	)
 
+	MODE_COD = '0'
+	MODE_WALLET = '1'
+
+	MODE_CHOICES = (
+		(MODE_COD, 'Cash On Deilvery'),
+		(MODE_WALLET, 'Paid'),
+	)
+
 	order_id = models.AutoField(primary_key = True)
 	pnr = models.ForeignKey(Pnr, blank = True, null = True, db_column = 'pnr_no', on_delete = models.CASCADE)
 	cust = models.ForeignKey(Customer, blank = True, null = True, db_column = 'cust_id', on_delete = models.CASCADE)
 	shop = models.ForeignKey(Shop, blank = True, null = True, db_column = 'shop_id', on_delete = models.CASCADE)
 	item = models.ForeignKey(Fooditem, blank = True, null = True, db_column = 'item_id', on_delete = models.CASCADE)
 	quantity = models.IntegerField("Quantity", blank = True, null = True)
+	paymode = models.CharField("Payment Mode", choices = MODE_CHOICES, max_length = 1, blank = True, null = True)
 	status = models.CharField("Status of Order", choices = STATUS_CHOICES, max_length = 1, blank = True, default = STATUS_PENDING)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 

@@ -11,7 +11,8 @@ class Shop(models.Model):
 	shop_id = models.CharField("Shop ID", db_column = 'shop_id', primary_key = True, max_length = 7)
 	shop_name = models.CharField("Shop Name", max_length = 60, blank = True, null = True)
 	station = models.ForeignKey(Station, blank = True, null = True, db_column = 'station_id', on_delete = models.CASCADE)
-	rating = models.PositiveSmallIntegerField("Rating", blank = True, null = True)
+	rating = models.PositiveSmallIntegerField("Rating", blank = True, null = True, default = 0)
+	numratings = models.IntegerField("Number of Ratings", blank = True, null = True, default = 0)
 	time_stamp = models.DateTimeField(auto_now = True, blank = True, null = True)
 
 	class Meta:
