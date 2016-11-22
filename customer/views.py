@@ -101,20 +101,40 @@ def add_wallet_amount(request):
 def place_order(request):
 
 	if request.method == 'POST':
+
+		reqdata = json.loads(request.body.decode("utf-8"))
+		pnrno = reqdata["pnr"]
+		shop_id = reqdata["shop_id"]
+		paymode = reqdata["paymode"]
+		cost = 0
+		wallet_amount = 0
 		try:
-			reqdata = json.loads(request.body.decode("utf-8"))
-			pnrno = reqdata["pnr"]
-			shop_id = reqdata["shop_id"]
-			paymode = reqdata["paymode"]
+			for item in reqdata["items"]:
+				qry = "select cost_per_plate from item where item_id = %s"
+				resultset = pgExecQuery(qry, [item["id"]])
+				cost += resultset[0].cost_per_plate * item["quantity"]
+			if paymode == Order.MODE_WALLET:
+				qry = "select wallet_amount from customer where user_id =  %s"
+				resultset = pgExecQuery(qry, [request.user.id])
+				wallet_amount = resultset[0].wallet_amount
+				if cost > wallet_amount:
+					return JsonResponse({"status": False, "msg": "Balance in your wallet is insufficient to place the order"})
+		except:
+			return JsonResponse({"status": False, "msg": "Unknown Error Occured"})
+
+		try:
 			resp = {"status": True}
 			resp["order_ids"] = []
 			for item in reqdata["items"]:
 				qry = "insert into orders(pnr_no, cust_id, shop_id, item_id, quantity, status, paymode, time_stamp) values (%s,%s,%s,%s,%s,%s,%s,now()) returning order_id"
 				resultset = pgExecQuery(qry, [pnrno, request.user.id, shop_id, item["id"], item["quantity"], Order.STATUS_PENDING, paymode])
 				resp["order_ids"].append(resultset[0].order_id)
+			if paymode == Order.MODE_WALLET:
+				qry = "update customer set wallet_amount = %s where user_id = %s"
+				pgExecUpdate(qry, [wallet_amount - cost, request.user.id])
 			return JsonResponse(resp)
 		except:
-			return JsonResponse({"status": False})
+			return JsonResponse({"status": False, "msg": "Unknown Error Occured"})
 
 	else:
 		return JsonResponse({"status": False, "msg": "Expected method = HTTP POST"})
@@ -162,6 +182,7 @@ def get_all_orders(request):
 		orders = Order.objects.select_related('shop', 'shop__station', 'item').filter(cust = request.user.customer).order_by('-time_stamp')
 		for order in orders:
 			odict = {
+				"order_id": order.order_id,
 				"shop_id": order.shop_id,
 				"shop_name": order.shop.shop_name,
 				"station_name": order.shop.station.station_name,
@@ -188,7 +209,7 @@ def post_review(request):
 	if request.method == 'POST':
 		try:
 			reqdata = json.loads(request.body.decode("utf-8"))
-			qry = "insert into review(cust_id, shop_id, msg) values(%s, %s, %s)"
+			qry = "insert into review (cust_id, shop_id, msg) values(%s, %s, %s)"
 			pgExecUpdate(qry, [request.user.id, reqdata["shop_id"], reqdata["msg"]])
 			posted_rating = reqdata["rating"]
 			if posted_rating != 0:
@@ -197,7 +218,7 @@ def post_review(request):
 				_r = resultset[0].rating
 				_nr = resultset[0].numratings
 				new_rating = (_r * _nr + posted_rating) / (1 + _nr)
-				qry = "update shop set rating = %s, numrating = %s where shop_id = %s"
+				qry = "update shop set rating = %s, numratings = %s where shop_id = %s"
 				pgExecUpdate(qry, [new_rating, 1 + _nr, reqdata["shop_id"]])
 			return JsonResponse({"status": True})
 		except:
