@@ -101,7 +101,7 @@ def orders_page(request):
 @csrf_exempt
 def get_all_orders(request):
 
-	# try:
+	try:
 		resp = {"status": True}
 		resp["ongoing_orders"] = []
 		resp["completed_orders"] = []
@@ -124,7 +124,7 @@ def get_all_orders(request):
 				"coach_no" : order.pnr.coach_no,
 				"berth_no" : order.pnr.berth_no,
 				"payment" : order.get_paymode_display(),
-				"status" : order.get_status_display(),
+				"status" : order.status,
  
 			}
 
@@ -134,5 +134,26 @@ def get_all_orders(request):
 				resp["ongoing_orders"].append(odict)
 		resp["status"] = True
 		return JsonResponse(resp)
-	# except:
-	# 	return JsonResponse({"status": False})
+	except:
+		return JsonResponse({"status": False})
+
+
+@csrf_exempt
+def status_change(request):
+	try:
+		reqdata = request.body.decode("utf-8")
+		qry = "select status from orders where order_id = %s"
+		resultset = pgExecQuery(qry, [request.POST.get("order_id")])
+		if resultset[0].status != Order.STATUS_CANCELLED:
+			qry = "update orders set status = %s where order_id = %s"
+			pgExecUpdate(qry, [request.POST.get("status"), request.POST.get("order_id")])
+			return JsonResponse({"status" : True , "order_id" : request.POST.get("order_id"), "statuschange" : request.POST.get("status")})
+		else :
+			return JsonResponse({"status" : False, "user_error" : '1' , "order_id" : request.POST.get("order_id"), "statuschange" : request.POST.get("status")})
+	except:
+		return JsonResponse({"status" : False})
+
+
+
+
+

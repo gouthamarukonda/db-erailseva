@@ -56,7 +56,8 @@
 
     
     <div style="width:100%;">
-      <h2 align="center" id="shop_name" style="color:#26a69a"></h2>  
+      <h2 align="center" id="shop_name" style="color:#26a69a"></h2> .
+      <div id="msg" align="right" style="margin-right:50px;font-size:30px;"></div> 
 
 
     <table style="width:90%;">
@@ -114,9 +115,6 @@
            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
            text-transform:uppercase;
         }
-
-
-        /*** Table Styles **/
 
         .table-fill {
           background: white;
@@ -215,7 +213,6 @@
         tbody:hover > tr td {
           filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
           opacity: 0.5;
-          /* uncomment for blur effect */
            color:#2d2d2d;
           @include text-shadow(0px 0px 2px rgba(0,0,0,0.8));
         }
@@ -234,81 +231,121 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{% static 'shop/js/materialize.js' %}"></script>
     <script type="text/javascript">
       window.setInterval(function(){
         ajaxCallFunction();  //calling every 5 seconds
-      }, 500000);
+      }, 5000);
 
       window.onload = function() {
         ajaxCallFunction();
       };
 
-      function ajaxCallFunction(){
-          //this function uses ajax to interact with the server
-           $.ajax({
-            type: 'GET',
-            url: '/shop/fetchorders/',
-            success: function(response) {
-              // alert(response.status);
-                if(response.status){
-                  $('#shop_name').html(response.this_shop_name + " - " + response.this_station_name);
-                  completedorders = response.completed_orders;
-                  document.getElementById('completed_orders').innerHTML = '';
-                    for(var i = 0; i < completedorders.length; ++i)
-                    {
-                          
-                           var data = '<tr>'+
-                            '<td>'+completedorders[i].order_id+'</td>'+
-                            '<td>'+completedorders[i].item_name+'</td>'+
-                            '<td>'+completedorders[i].quantity+'</td>'+
-                            '<td>'+completedorders[i].del_date+'</td>'+
-                            '<td>'+completedorders[i].train_name+'</td>'+
-                            '<td>'+completedorders[i].coach_no+'</td>'+
-                            '<td>'+completedorders[i].berth_no+'</td>'+
-                            '<td>'+completedorders[i].payment+'</td>'+
-                            '<td><select><option value="1">Option 1</option><option value="2">Option 2</option><option value="3">Option 3</option></select></td></tr>' ; 
-                          document.getElementById('completed_orders').innerHTML += data;
-                        
 
+      function typeofstatus(i){
+        if( i == 0)return "Pending";
+        if( i == 1)return "Received";
+        if( i == 2)return "Preparing";
+        if( i == 3)return "Prepared";
+        if( i == 4)return "Dispatched";
+        if( i == 5)return "Delivered";
+        if( i == 8)return "Cancelled";
+        if( i == 9)return "Cancelled by Vendor"; 
 
-                         
-                    };
+      };
+      function myfunc(sel){
+        $.ajax({
+          type:'POST',
+          url: '/shop/statuschange/',
+          data:{
+              order_id : sel.parentNode.parentNode.parentNode.childNodes[0].innerHTML,
+              status : sel.options[sel.selectedIndex].value,
+          },
+          success:function(response){
+            if(response.status == 1){
+              $('#msg').html("<a style='color:green;'><b>Order " + response.order_id + " has been updated to "+ typeofstatus(response.statuschange) +"</b></a>");
 
-                    ongoingorders = response.ongoing_orders;
-                    document.getElementById('ongoing_orders').innerHTML = '';
-                    for(var i = 0; i < ongoingorders.length; ++i)
-                    {
-                        var data ='<tr>'+
-                            '<td>'+ongoingorders[i].order_id+'</td>'+
-                            '<td>'+ongoingorders[i].item_name+'</td>'+
-                            '<td>'+ongoingorders[i].quantity+'</td>'+
-                            '<td>'+ongoingorders[i].del_date+'</td>'+
-                            '<td>'+ongoingorders[i].train_name+'</td>'+
-                            '<td>'+ongoingorders[i].coach_no+'</td>'+
-                            '<td>'+ongoingorders[i].berth_no+'</td>'+
-                            '<td>'+ongoingorders[i].payment+'</td>'+
-                            '<td>'+ongoingorders[i].status+'</td>'+
-                            '</tr>';
-                      document.getElementById('ongoing_orders').innerHTML += data;
-                    }
-                }
-                else{
-                  alert('Error Occured  !! Please Reload the page')
-                }
             }
+            else{
+              if(response.user_error == '1'){
+                $('#msg').html("<a style='color:red;'><b>Sorry, User has Cancelled the order " + response.order_id +"</b></a>");
+              }
+              else{
+                $('#msg').html("<a style='color:blue;'><b>Error Occured !! Check recent updates</b></a>");
+              }
+              ajaxCallFunction();
+            }
+          }
         });
       }
-      </script>
-      <script>
 
-        $(document).ready(function() {
-            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-            $('.modal-trigger').leanModal();
+      function ajaxCallFunction(){
+          //this function uses ajax to interact with the server
+       $.ajax({
+        type: 'GET',
+        url: '/shop/fetchorders/',
+        success: function(response) {
+          // alert(response.status);
+          if(response.status){
+            $('#shop_name').html(response.this_shop_name + " - " + response.this_station_name);
+            completedorders = response.completed_orders;
+            document.getElementById('completed_orders').innerHTML = '';
+              for(var i = 0; i < completedorders.length; ++i)
+              {     
+               var data = '<tr>'+
+                '<td>'+completedorders[i].order_id+'</td>'+
+                '<td>'+completedorders[i].item_name+'</td>'+
+                '<td>'+completedorders[i].quantity+'</td>'+
+                '<td>'+completedorders[i].del_date+'</td>'+
+                '<td>'+completedorders[i].train_name+'</td>'+
+                '<td>'+completedorders[i].coach_no+'</td>'+
+                '<td>'+completedorders[i].berth_no+'</td>'+
+                '<td>'+completedorders[i].payment+'</td>'+
+                '<td>'+typeofstatus(completedorders[i].status)+'</td>'+
+                '</tr>' ;
+                document.getElementById('completed_orders').innerHTML += data;       
+              };
+
+              ongoingorders = response.ongoing_orders;
+              document.getElementById('ongoing_orders').innerHTML = '';
+              for(var i = 0; i < ongoingorders.length; ++i)
+              {
+                var data ='<tr>'+
+                    '<td>'+ongoingorders[i].order_id+'</td>'+
+                    '<td>'+ongoingorders[i].item_name+'</td>'+
+                    '<td>'+ongoingorders[i].quantity+'</td>'+
+                    '<td>'+ongoingorders[i].del_date+'</td>'+
+                    '<td>'+ongoingorders[i].train_name+'</td>'+
+                    '<td>'+ongoingorders[i].coach_no+'</td>'+
+                    '<td>'+ongoingorders[i].berth_no+'</td>'+
+                    '<td>'+ongoingorders[i].payment+'</td>'+
+                    '<td><div class="input-field col s12"><select onchange="myfunc(this)" class="statuschange" name="'+ongoingorders[i].order_id+'" style="visibility:visible;display:block">';
+                    
+                for(var j = 0; j < 5;j++)
+                {
+                    
+                    if(ongoingorders[i].status == j){
+                      data += '<option selected value="'+j+'">'+typeofstatus(j)+'</option>';
+                    }
+                    else{
+                      data += '<option value="'+j+'">'+typeofstatus(j)+'</option>'; 
+                    }
+                }
+                data += '<option value="5">Delivered</option></td></tr>';
+                document.getElementById('ongoing_orders').innerHTML += data;
+              }
+            
+            }
+            else{
+              alert('Error Occured  !! Please Reload the page');
+            }
+          }
         });
+      }
     </script>
+
     <script>
         $(document).ready(function() {
             $("#quote").pushpin({
@@ -329,6 +366,5 @@
         window.jQuery || document.write('<script src="{% static 'shop/js/vendor/jquery-1.9.1.min.js' %}"><\/script>')
     </script>
     <script src="{% static 'shop/js/main.js' %}"></script>
-</body>
-
+  </body>
 </html>
