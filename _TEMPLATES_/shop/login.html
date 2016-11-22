@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="author" content="Goutham Arukonda">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <title>e-Railseva</title>
+
+    <link rel="stylesheet" href="http://ecell.in/cr/user/css/main.css">
+    <script src="http://ecell.in/cr/user/js/vendor/modernizr-2.6.2.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,700,400,500,600' rel='stylesheet' type='text/css'>
+    <link href="{% static 'shop/css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection" />
+
+    <link href="http://ecell.in/cr/user/css/index.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+
+      .input-field div.error{
+    
+    color:#FF4081;
+  }    </style>
+</head>
+
+<!-- ==============BODY==============  -->
+
+<body class="red">
+    <!-- 
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+
+    </div> -->
+
+    <script>
+        function showToast(message, duration) {
+            Materialize.toast(message, duration);
+        }
+    </script>
+
+    <div align="center">
+
+        <div class="col s1 z-depth-6 card-panel" style="width:30%;margin-top:15%;background-color:#fff;padding:20px;text-align:center;" align="center">
+          <h1 style="color:black;"> e-RailSeva</h1>
+            <form id="form1" novalidate="novalidate" class="col s12" enctype='application/json' method="POST" action="">
+                <div class="row ">
+                    <div class="input-field col s12">
+                        <i class="mdi-social-person-outline prefix"></i>
+                        <input id="username" name="username" type="text" class="validate" required="" aria-required="true" required>
+                        <label for="username" class="center-align">Username</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="mdi-action-lock-outline prefix"></i>
+                        <input id="password" name="password" type="password" class="validate" required="" aria-required="true" required>
+                        <label for="cr_id">Password</label>
+                    </div>
+                </div>
+
+                <div id="msg" style="color:rbg(33,150,243,1);font-weight:400;"></div>
+                <button class="btn waves-effect waves-light" align="center" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:0%;margin-top:20px;" type="submit" name="action">Login
+                <i class="material-icons right">send</i>
+                </button><br>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                      <p class="margin medium-small">Don't Have an account? <a href="/shop/register">Register Now!</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+    <!--  Scripts-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="http://ecell.in/cr/user/js/materialize.js"></script>
+    <script type="text/javascript">
+
+    $('#form1').submit(function(e)
+    {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/shop/login/',
+            data: $("#form1").serialize(),
+            success: function(response) {
+                    if(response.status == '1')
+                    {
+                        window.location.href = '/shop/home/';
+                    }
+                    else if(response.status == '2'){
+                        $('#msg').html("<a class='color:blue;'><b>INVALID CREDENTIALS</b></a>");
+                    }
+                    else if(response.status == '3'){
+                        $('#msg').html("<a class='color:blue;'><b>Error Occured !! Login Again </b></a>");
+                    }
+                }
+        });
+    });
+
+
+
+        $(document).ready(function() {
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal-trigger').leanModal();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#quote").pushpin({
+                top: $("nav").height()
+            });
+            $('.button-collapse').sideNav({
+                menuWidth: 290, // Default is 240
+                edge: 'left', // Choose the horizontal origin
+                // closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+            });
+        });
+
+        $(document).ready(function() {
+            $('select').material_select();
+        });
+    </script>
+    <script>
+        $.validate({
+            lang: 'en'
+        });
+    </script>
+
+
+    <script>
+        window.jQuery || document.write('<script src="http://ecell.in/cr/user/js/vendor/jquery-1.9.1.min.js"><\/script>')
+    </script>
+    <script src="http://ecell.in/cr/user/js/main.js"></script>
+   <!-- chartist -->
+    <script type="text/javascript" src="http://demo.geekslabs.com/materialize/v3.1/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="http://demo.geekslabs.com/materialize/v3.1/js/plugins/jquery-validation/additional-methods.min.js"></script>
+
+    <script type="text/javascript">
+ $("#form1").validate({
+        rules: {
+            username: {
+                required: true,
+                minlength: 5
+            },
+            password: {
+                required: true,
+                minlength: 5
+            }
+        },
+        //For custom messages
+        messages: {
+            username:{
+                required: "Please Enter a username",
+                minlength: "Enter at least 5 characters"
+            },
+            password:{
+                required: "Please Enter the password",
+                minlength: "Password should be atleast 5 characters"
+            }
+        },
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            // $(placement).append(error)
+            error.insertAfter(element);
+          } else {
+            error.insertAfter(element);
+          }
+        }
+     });
+    </script>
+
+</body>
+
+</html>
