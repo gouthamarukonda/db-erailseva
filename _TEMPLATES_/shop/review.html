@@ -61,41 +61,21 @@
 
     <table style="width:90%;">
       <thead>
-          <tr>
-              <th>Order Id</th>
-              <th>Item name</th>
-              <th>Quantity</th>
-              <th>Delivery Time</th>
-              <th>Train name</th>
-              <th>Coach</th>
-              <th>Berth</th>
-              <th>Payment</th>
-              <th>status</th>
-          </tr>
+        <tr>
+            <th style="width: 20%;text-align: center;">Customer Name</th>
+            <th style="width: 80%;text-align: center;">Review</th>
+        </tr>
       </thead>
-      <tbody id="ongoing_orders">
+      <tbody>
+        {% for rvw in reviewlist %}
+          <tr>
+              <th style="width: 20%;text-align: center;">{{ rvw.name }}</th>
+              <th style="width: 80%;text-align: center;">{{ rvw.msg }}</th>
+          </tr>
+        {% endfor %}
       </tbody> 
     </table>
 
-    <br>
-
-    <table style="width:90%;">
-      <thead>
-          <tr>
-              <th>Order Id</th>
-              <th>Item name</th>
-              <th>Quantity</th>
-              <th>Delivery Time</th>
-              <th>Train name</th>
-              <th>Coach</th>
-              <th>Berth</th>
-              <th>Payment</th>
-              <th>status</th>
-          </tr>
-      </thead>
-      <tbody id="completed_orders">
-      </tbody>    
-    </table>
     <style type="text/css">
         div.table-title {
            display: block;

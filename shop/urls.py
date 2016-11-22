@@ -12,4 +12,5 @@ urlpatterns += [
 	url(r'^login/$', views2.user_login),	
 	url(r'^home/$', views2.orders_page),
 	url(r'^fetchorders/$', views2.get_all_orders),
+	url(r'^reviews/$', views2.get_reviews),
 ]

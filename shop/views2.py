@@ -136,3 +136,16 @@ def get_all_orders(request):
 		return JsonResponse(resp)
 	# except:
 	# 	return JsonResponse({"status": False})
+
+@csrf_exempt
+def get_reviews(request):
+
+	if request.method == 'GET':
+		qry = "select rating from shop where shop_id = %s"
+		resultset = pgExecQuery(qry, [request.user.shop.shop_id])
+		rating = resultset[0].rating
+		reviews = Review.objects.filter(shop = request.user.shop).select_related('cust')
+		rlist = []
+		for rev in reviews:
+			rlist.append({"name": rev.cust.user.first_name, "msg": rev.msg})
+		return render(request, 'shop/review.html', {'rating': rating, 'reviewlist': rlist})
