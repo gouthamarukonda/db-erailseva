@@ -61,6 +61,10 @@ def user_login(request):
 		pass
 
 @csrf_exempt
+def user_home(request):
+	pass
+
+@csrf_exempt
 def user_logout(request):
 	logout(request)
 	return JsonResponse({"status": True})
@@ -104,7 +108,7 @@ def place_order(request):
 			resp = {"status": True}
 			resp["order_ids"] = []
 			for item in reqdata["items"]:
-				qry = "insert into orders(pnr_no, cust_id, shop_id, item_id, quantity, status) values(%s,%s,%s,%s,%s,%s) returning order_id"
+				qry = "insert into orders(pnr_no, cust_id, shop_id, item_id, quantity, status, time_stamp) values (%s,%s,%s,%s,%s,%s,now()) returning order_id"
 				resultset = pgExecQuery(qry, [pnrno, request.user.id, shop_id, item["id"], item["quantity"], Order.STATUS_PENDING])
 				resp["order_ids"].append(resultset[0].order_id)
 			return JsonResponse(resp)

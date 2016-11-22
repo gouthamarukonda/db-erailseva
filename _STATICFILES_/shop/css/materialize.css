@@ -2510,7 +2510,7 @@ input[type=range]+.thumb {
 }
 @font-face {
     font-family: "Material-Design-Icons";
-    src: url("../font/material-design-icons/Material-Design-Icons.eot%3F") format("embedded-opentype"), url("../font/material-design-icons/Material-Design-Icons.woff") format("woff"), url("../font/material-design-icons/Material-Design-Icons.woff") format("woff"), url("../font/material-design-icons/Material-Design-Icons.ttf.html") format("truetype"), url("../font/material-design-icons/Material-Design-Icons.svg") format("svg");
+    src: url("../font/material-design-icons/Material-Design-Icons.eot") format("embedded-opentype"), url("../font/material-design-icons/Material-Design-Icons.woff") format("woff"), url("../font/material-design-icons/Material-Design-Icons.woff") format("woff"), url("../font/material-design-icons/Material-Design-Icons.ttf.html") format("truetype"), url("../font/material-design-icons/Material-Design-Icons.svg") format("svg");
     font-weight: normal;
     font-style: normal
 }

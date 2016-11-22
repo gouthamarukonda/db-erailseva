@@ -12,6 +12,10 @@ from customer.models import Customer, Order, Review
 from dbHandler import pgExecQuery, pgExecUpdate
 
 @csrf_exempt
+def shop_register(request):
+	pass
+
+@csrf_exempt
 def user_login(request):
 
 	if request.method == 'POST':
@@ -26,16 +30,16 @@ def user_login(request):
 			return JsonResponse({"status": '3'})
 
 	if request.method == 'GET':
-		return render(request, 'shop/login.html', {'status' : True})
-
-
-@csrf_exempt
-def orders_page(request):
-	if request.method == 'GET':
-		return render(request, 'shop/home.html', {'status' : True})
-
+		return render(request, 'shop/login.html')
 
 @csrf_exempt
 def user_logout(request):
 	logout(request)
 	return JsonResponse({"status": True})
+
+@csrf_exempt
+def orders_page(request):
+	if request.method == 'GET':
+		return render(request, 'shop/home.html')
+
+
