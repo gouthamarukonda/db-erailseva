@@ -13,4 +13,5 @@ urlpatterns += [
 	url(r'^home/$', views2.orders_page),
 	url(r'^fetchorders/$', views2.get_all_orders),
 	url(r'^statuschange/$', views2.status_change),
+	url(r'^reviews/$', views2.get_reviews),
 ]
