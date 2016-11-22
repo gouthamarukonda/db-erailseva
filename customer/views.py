@@ -110,7 +110,7 @@ def place_order(request):
 		wallet_amount = 0
 		try:
 			for item in reqdata["items"]:
-				qry = "select cost_per_plate from item where item_id = %s"
+				qry = "select cost_per_plate from fooditem where item_id = %s"
 				resultset = pgExecQuery(qry, [item["id"]])
 				cost += resultset[0].cost_per_plate * item["quantity"]
 			if paymode == Order.MODE_WALLET:
