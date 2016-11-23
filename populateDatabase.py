@@ -27,7 +27,7 @@ sample_cust_user_ids = ['10001', '10002']
 for cid in sample_cust_user_ids:
 	user = User(username = cid)
 	user.set_password(cid)
-	user.first_name = "TESTCUSTOMER" + cid[4]
+	user.first_name = "CUSTOMER-" + cid[4]
 	user.save()
 	customer = Customer(user = user, wallet_amount = 0, mobile = "0000000000")
 	customer.time_stamp = datetime.now()
