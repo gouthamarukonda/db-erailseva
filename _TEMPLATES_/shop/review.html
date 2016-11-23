@@ -69,8 +69,8 @@
       <tbody>
         {% for rvw in reviewlist %}
           <tr>
-              <th style="width: 20%;text-align: center;">{{ rvw.name }}</th>
-              <th style="width: 80%;text-align: center;">{{ rvw.msg }}</th>
+              <td style="width: 20%;text-align: center;">{{ rvw.name }}</td>
+              <td style="width: 80%;text-align: center;">{{ rvw.msg }}</td>
           </tr>
         {% endfor %}
       </tbody> 
@@ -217,16 +217,11 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{% static 'shop/js/materialize.js' %}"></script>
-    <script type="text/javascript">
-      window.setInterval(function(){
-        ajaxCallFunction();  //calling every 5 seconds
-      }, 500000);
-
+    <script>
       window.onload = function() {
         ajaxCallFunction();
       };
-
-      function ajaxCallFunction(){
+     function ajaxCallFunction(){
           //this function uses ajax to interact with the server
            $.ajax({
             type: 'GET',
@@ -235,45 +230,6 @@
               // alert(response.status);
                 if(response.status){
                   $('#shop_name').html(response.this_shop_name + " - " + response.this_station_name);
-                  completedorders = response.completed_orders;
-                  document.getElementById('completed_orders').innerHTML = '';
-                    for(var i = 0; i < completedorders.length; ++i)
-                    {
-                          
-                           var data = '<tr>'+
-                            '<td>'+completedorders[i].order_id+'</td>'+
-                            '<td>'+completedorders[i].item_name+'</td>'+
-                            '<td>'+completedorders[i].quantity+'</td>'+
-                            '<td>'+completedorders[i].del_date+'</td>'+
-                            '<td>'+completedorders[i].train_name+'</td>'+
-                            '<td>'+completedorders[i].coach_no+'</td>'+
-                            '<td>'+completedorders[i].berth_no+'</td>'+
-                            '<td>'+completedorders[i].payment+'</td>'+
-                            '<td><select><option value="1">Option 1</option><option value="2">Option 2</option><option value="3">Option 3</option></select></td></tr>' ; 
-                          document.getElementById('completed_orders').innerHTML += data;
-                        
-
-
-                         
-                    };
-
-                    ongoingorders = response.ongoing_orders;
-                    document.getElementById('ongoing_orders').innerHTML = '';
-                    for(var i = 0; i < ongoingorders.length; ++i)
-                    {
-                        var data ='<tr>'+
-                            '<td>'+ongoingorders[i].order_id+'</td>'+
-                            '<td>'+ongoingorders[i].item_name+'</td>'+
-                            '<td>'+ongoingorders[i].quantity+'</td>'+
-                            '<td>'+ongoingorders[i].del_date+'</td>'+
-                            '<td>'+ongoingorders[i].train_name+'</td>'+
-                            '<td>'+ongoingorders[i].coach_no+'</td>'+
-                            '<td>'+ongoingorders[i].berth_no+'</td>'+
-                            '<td>'+ongoingorders[i].payment+'</td>'+
-                            '<td>'+ongoingorders[i].status+'</td>'+
-                            '</tr>';
-                      document.getElementById('ongoing_orders').innerHTML += data;
-                    }
                 }
                 else{
                   alert('Error Occured  !! Please Reload the page')
@@ -281,15 +237,7 @@
             }
         });
       }
-      </script>
-      <script>
 
-        $(document).ready(function() {
-            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-            $('.modal-trigger').leanModal();
-        });
-    </script>
-    <script>
         $(document).ready(function() {
             $("#quote").pushpin({
                 top: $("nav").height()

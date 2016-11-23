@@ -14,4 +14,7 @@ urlpatterns += [
 	url(r'^fetchorders/$', views2.get_all_orders),
 	url(r'^statuschange/$', views2.status_change),
 	url(r'^reviews/$', views2.get_reviews),
+	url(r'^logout/$', views2.user_logout),
+	url(r'^getmenu/$', views2.get_menu),
+	url(r'^fetchmenu/$', views2.fetch_menu),
 ]

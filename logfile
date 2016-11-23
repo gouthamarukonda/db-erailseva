@@ -113,3 +113,7 @@ ERROR:  column "day_of_journey" does not exist at character 8
 STATEMENT:  select day_of_journey from station where station_id = '00001'
 ERROR:  column "day_of_journey" does not exist at character 8
 STATEMENT:  select day_of_journey from station where station_id = '00001'
+ERROR:  syntax error at or near "'msg'" at character 21
+STATEMENT:  insert into review ('msg' , 'cust_id' , 'shop_id' , 'time_stamp') values ('hello this is goutham' , '1' , '00001' , now())
+ERROR:  relation "food_items" does not exist at character 16
+STATEMENT:  select  * from food_items

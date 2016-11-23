@@ -52,50 +52,7 @@
         </div>
     </nav>
 
-  </header>
-
-    
-    <div style="width:100%;">
-      <h2 align="center" id="shop_name" style="color:#26a69a"></h2>  
-
-
-    <table style="width:90%;">
-      <thead>
-          <tr>
-              <th>Order Id</th>
-              <th>Item name</th>
-              <th>Quantity</th>
-              <th>Delivery Time</th>
-              <th>Train name</th>
-              <th>Coach</th>
-              <th>Berth</th>
-              <th>Payment</th>
-              <th>status</th>
-          </tr>
-      </thead>
-      <tbody id="ongoing_orders">
-      </tbody> 
-    </table>
-
-    <br>
-
-    <table style="width:90%;">
-      <thead>
-          <tr>
-              <th>Order Id</th>
-              <th>Item name</th>
-              <th>Quantity</th>
-              <th>Delivery Time</th>
-              <th>Train name</th>
-              <th>Coach</th>
-              <th>Berth</th>
-              <th>Payment</th>
-              <th>status</th>
-          </tr>
-      </thead>
-      <tbody id="completed_orders">
-      </tbody>    
-    </table>
+    </header>
     <style type="text/css">
         div.table-title {
            display: block;
@@ -227,26 +184,124 @@
           opacity: 1;
       }
     </style>
+
+
+    <h2 align="center" id="shop_name" style="color:#26a69a"></h2> .
+
+
+    <div class="row">
+        <div class="col s6">
+        <h4 align="center" style="color:#ee6e73">Add Menu</h4>  
+        <table style="width:90%;">
+            <thead>
+            <tr>
+                <th style="width: 50%;text-align: center;">Item</th>
+                <th style="width: 20%;text-align: center;">Cost</th>
+            </tr>
+            </thead>
+            <form name="frmfeed" enctype="multipart/form-data" method="post">
+                <tbody id="haha">
+                  <tr name="myname[]">
+                        <td style="width: 50%;text-align: center;">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="icon_prefix" type="text" name="item_name[]" class="validate">
+                                <label for="icon_prefix">Item Name</label>
+                            </div>
+                        </td>
+                        <td style="width: 50%;text-align: center;">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="icon_prefix" type="text" name="cost[]" class="validate">
+                                <label for="icon_prefix">Cost of item per plate</label>
+                            </div>
+                        </td>
+                  </tr>
+                </tbody> 
+                    </table>
+                <a class="btn-floating btn-large waves-effect waves-light red" onclick="my_add()" style="margin-left:60%;margin-right:2.5%;"><i class="material-icons">add</i></a>
+                <a class="btn-floating btn-large waves-effect waves-light red" onclick="my_minus()" style="margin-right:2.5%;"><i class="material-icons">clear</i></a>
+                <button class="btn waves-effect waves-light" align="center" type="submit" name="action">Save<i class="material-icons right">send</i></button><br>
+            </form>
+        </div>
+
+
+
+        <div class="col s6">
+            <h4 align="center" style="color:#ee6e73">Delete/ Update Menu ( tick to del )</h4>  
+            <table style="width:90%;">
+              <thead>
+                <tr>
+                    <th></th>
+                    <th>Item</th>
+                    <th>Cost</th>
+                </tr>
+              </thead>
+                <tbody id="hahaha">
+                </tbody>
+            </table>
+
+                <button style="margin-left:78%;" class="btn waves-effect waves-light" align="center" type="submit" name="action">Update<i class="material-icons right">send</i></button><br>
+        </div>
     </div>
+
+    <script type="text/javascript">
+        function my_add(){
+            $( "#haha" ).append( '<tr name="myname[]"><td style="width: 50%;text-align: center;"><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" type="text" name="item_name[]" class="validate"><label for="icon_prefix">Item Name</label></div></td><td style="width: 50%;text-align: center;"><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" type="text" name="cost[]" class="validate"><label for="icon_prefix">Cost of item per unit</label></div></td></tr>');
+        }
+
+        function my_minus(){
+
+           if($("tr[name='myname[]']").length > 1)
+           {
+              $("tr[name='myname[]']:eq("+(length-1)+")").remove();
+           }
+
+        }
+    </script>
 
 
     <!--  Scripts-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{% static 'shop/js/materialize.js' %}"></script>
     <script type="text/javascript">
-      window.setInterval(function(){
-        ajaxCallFunction();  //calling every 5 seconds
-      }, 500000);
 
-      window.onload = function() {
-        ajaxCallFunction();
-      };
+        window.onload = function() {
+            ajaxCallFunction();
+            ajaxCallMenu();
+        };
 
-      function ajaxCallFunction(){
+        var length_update;
+
+
+
+        function ajaxCallMenu(){
+            $.ajax({
+                type : 'GET',
+                url : '/shop/fetchmenu/',
+                success: function(response){
+                   if(response.status){
+                        document.getElementById('hahaha').innerHTML = '';
+                        list = response.rlist;
+                        length_update = list.length;
+                        for(var i=0;i<list.length;i++){
+                            var data ='<tr><td><p><input type="checkbox" class="delete_checkbox" style="display:block;visibility:visible;" id="test'+i+'"/><label for="test'+i+'"></label></p></td><td><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" value="'+ list[i].item_name +'"" type="text" disabled><label for="icon_prefix"></label></div></td><td><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" value="'+ list[i].cost_per_plate +'"" type="text"><label for="icon_prefix"></label></div></td></tr>';
+                                document.getElementById('hahaha').innerHTML += data;
+                        } 
+
+                   }
+                   else{
+                        alert('Error Occured ! Refresh Page !!');
+                   }
+                }
+            });
+        }
+
+        function ajaxCallFunction(){
           //this function uses ajax to interact with the server
            $.ajax({
             type: 'GET',
@@ -255,45 +310,6 @@
               // alert(response.status);
                 if(response.status){
                   $('#shop_name').html(response.this_shop_name + " - " + response.this_station_name);
-                  completedorders = response.completed_orders;
-                  document.getElementById('completed_orders').innerHTML = '';
-                    for(var i = 0; i < completedorders.length; ++i)
-                    {
-                          
-                           var data = '<tr>'+
-                            '<td>'+completedorders[i].order_id+'</td>'+
-                            '<td>'+completedorders[i].item_name+'</td>'+
-                            '<td>'+completedorders[i].quantity+'</td>'+
-                            '<td>'+completedorders[i].del_date+'</td>'+
-                            '<td>'+completedorders[i].train_name+'</td>'+
-                            '<td>'+completedorders[i].coach_no+'</td>'+
-                            '<td>'+completedorders[i].berth_no+'</td>'+
-                            '<td>'+completedorders[i].payment+'</td>'+
-                            '<td><select><option value="1">Option 1</option><option value="2">Option 2</option><option value="3">Option 3</option></select></td></tr>' ; 
-                          document.getElementById('completed_orders').innerHTML += data;
-                        
-
-
-                         
-                    };
-
-                    ongoingorders = response.ongoing_orders;
-                    document.getElementById('ongoing_orders').innerHTML = '';
-                    for(var i = 0; i < ongoingorders.length; ++i)
-                    {
-                        var data ='<tr>'+
-                            '<td>'+ongoingorders[i].order_id+'</td>'+
-                            '<td>'+ongoingorders[i].item_name+'</td>'+
-                            '<td>'+ongoingorders[i].quantity+'</td>'+
-                            '<td>'+ongoingorders[i].del_date+'</td>'+
-                            '<td>'+ongoingorders[i].train_name+'</td>'+
-                            '<td>'+ongoingorders[i].coach_no+'</td>'+
-                            '<td>'+ongoingorders[i].berth_no+'</td>'+
-                            '<td>'+ongoingorders[i].payment+'</td>'+
-                            '<td>'+ongoingorders[i].status+'</td>'+
-                            '</tr>';
-                      document.getElementById('ongoing_orders').innerHTML += data;
-                    }
                 }
                 else{
                   alert('Error Occured  !! Please Reload the page')

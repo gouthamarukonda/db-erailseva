@@ -91,7 +91,7 @@ def user_login(request):
 @csrf_exempt
 def user_logout(request):
 	logout(request)
-	return JsonResponse({"status": True})
+	return HttpResponseRedirect('/shop/login/')
 
 @csrf_exempt
 def orders_page(request):
@@ -165,3 +165,24 @@ def get_reviews(request):
 		for rev in reviews:
 			rlist.append({"name": rev.cust.user.first_name, "msg": rev.msg})
 		return render(request, 'shop/review.html', {'rating': rating, 'reviewlist': rlist})
+
+@csrf_exempt 
+def get_menu(request):
+
+	if request.method == 'GET':
+		return render(request, 'shop/menu.html')
+	else :
+		pass
+
+
+@csrf_exempt 
+def fetch_menu(request):
+
+	if request.method == 'GET':
+		orders = Fooditem.objects.filter(shop = request.user.shop).order_by('item_name')
+		rlist = []
+		for rev in orders:
+			rlist.append({"item_id" : rev.item_id, "item_name" : rev.item_name , "cost_per_plate" : rev.cost_per_plate})
+		return JsonResponse({"rlist" : rlist, "status" :True})
+	else :
+		JsonResponse({"status" : False})
