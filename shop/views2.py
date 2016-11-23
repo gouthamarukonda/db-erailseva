@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
-
+from django.contrib.auth.decorators import login_required
 from customer.models import *
 from shop.models import *
 from station.models import *
@@ -86,18 +86,23 @@ def user_login(request):
 			return JsonResponse({"status": '3'})
 
 	if request.method == 'GET':
+		if request.user.is_authenticated():
+			return HttpResponseRedirect('/shop/home/')
 		return render(request, 'shop/login.html')
 
+@login_required(login_url='/shop/login/')
 @csrf_exempt
 def user_logout(request):
 	logout(request)
 	return HttpResponseRedirect('/shop/login/')
 
+@login_required(login_url='/shop/login/')
 @csrf_exempt
 def orders_page(request):
 	if request.method == 'GET':
 		return render(request, 'shop/home.html')
 
+@login_required(login_url='/shop/login/')
 @csrf_exempt
 def get_all_orders(request):
 
@@ -138,6 +143,7 @@ def get_all_orders(request):
 		return JsonResponse({"status": False})
 
 
+@login_required(login_url='/shop/login/')
 @csrf_exempt
 def status_change(request):
 	try:
@@ -153,6 +159,7 @@ def status_change(request):
 	except:
 		return JsonResponse({"status" : False})
 
+@login_required(login_url='/shop/login/')
 @csrf_exempt
 def get_reviews(request):
 
@@ -166,15 +173,17 @@ def get_reviews(request):
 			rlist.append({"name": rev.cust.user.first_name, "msg": rev.msg})
 		return render(request, 'shop/review.html', {'rating': rating, 'reviewlist': rlist})
 
+@login_required(login_url='/shop/login/')
 @csrf_exempt 
 def get_menu(request):
 
 	if request.method == 'GET':
 		return render(request, 'shop/menu.html')
 	else :
-		pass
+				return render(request, 'shop/menu.html')
 
 
+@login_required(login_url='/shop/login/')
 @csrf_exempt 
 def fetch_menu(request):
 
@@ -185,4 +194,33 @@ def fetch_menu(request):
 			rlist.append({"item_id" : rev.item_id, "item_name" : rev.item_name , "cost_per_plate" : rev.cost_per_plate})
 		return JsonResponse({"rlist" : rlist, "status" :True})
 	else :
-		JsonResponse({"status" : False})
+		try:
+			reqdata = json.loads(request.body.decode("utf-8"))
+			for rev in reqdata["updates"]:
+				if rev["deleted"] == True :
+					qry = "delete from fooditem where item_id = %s"
+					pgExecUpdate(qry, [rev["id"]])
+				else :
+					qry = "update fooditem set cost_per_plate = %s where item_id = %s"
+					pgExecUpdate(qry, [rev["cost"], rev["id"]])
+
+			return JsonResponse({"status" : True})
+		except:
+			return JsonResponse({"status" : False})
+
+@login_required(login_url='/shop/login/')
+@csrf_exempt
+def add_menu(request):
+	if request.method == 'POST':
+		reqdata = json.loads(request.body.decode("utf-8"))
+		qry = "insert into fooditem ( item_id, item_name, cost_per_plate, shop_id) values (%s, %s, %s, %s)"
+		for rev in reqdata["updates"]:
+			qry2 = "select max(item_id) from fooditem"
+			rep =  pgExecQuery(qry2)
+			pgExecUpdate(qry, [str(int(rep[0][0])+1), rev["item_name"], rev["cost"], request.user.shop.shop_id])
+		return JsonResponse({"status" : True})
+	else:
+		return JsonResponse({"status" : False})
+
+
+

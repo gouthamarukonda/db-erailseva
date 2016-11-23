@@ -17,4 +17,6 @@ urlpatterns += [
 	url(r'^logout/$', views2.user_logout),
 	url(r'^getmenu/$', views2.get_menu),
 	url(r'^fetchmenu/$', views2.fetch_menu),
+	url(r'^add_menu/$', views2.add_menu),
+
 ]

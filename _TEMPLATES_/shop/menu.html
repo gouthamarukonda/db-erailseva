@@ -45,9 +45,9 @@
         <div class="nav-wrapper hide-on-small-only">
                 <a href="" class="brand-logo" style="padding-left:10px;">e-RailSeva</a>
                 <ul class="right" style="margin-right:20px;">
-                  <li><a href=""  class="waves-effect waves-light"><b>Update Menu</b></a></li>
-                  <li><a href=""  class="waves-effect waves-light"><b>Reviews</b></a></li>
-                  <li><a href=""  class="waves-effect waves-light"><b>logout</b></a></li>
+                  <li><a href="/shop/home/"  class="waves-effect waves-light"><b>Orders</b></a></li>
+                  <li><a href="/shop/reviews/"  class="waves-effect waves-light"><b>Reviews</b></a></li>
+                  <li><a href="/shop/logout/"  class="waves-effect waves-light"><b>logout</b></a></li>
                 </ul>
         </div>
     </nav>
@@ -187,6 +187,7 @@
 
 
     <h2 align="center" id="shop_name" style="color:#26a69a"></h2> .
+    <div id="msg" align="right" style="margin-right:50px;font-size:30px;"></div> 
 
 
     <div class="row">
@@ -199,7 +200,6 @@
                 <th style="width: 20%;text-align: center;">Cost</th>
             </tr>
             </thead>
-            <form name="frmfeed" enctype="multipart/form-data" method="post">
                 <tbody id="haha">
                   <tr name="myname[]">
                         <td style="width: 50%;text-align: center;">
@@ -218,11 +218,10 @@
                         </td>
                   </tr>
                 </tbody> 
-                    </table>
+        </table>
                 <a class="btn-floating btn-large waves-effect waves-light red" onclick="my_add()" style="margin-left:60%;margin-right:2.5%;"><i class="material-icons">add</i></a>
                 <a class="btn-floating btn-large waves-effect waves-light red" onclick="my_minus()" style="margin-right:2.5%;"><i class="material-icons">clear</i></a>
-                <button class="btn waves-effect waves-light" align="center" type="submit" name="action">Save<i class="material-icons right">send</i></button><br>
-            </form>
+                <button class="btn waves-effect waves-light" onclick="add_menu()" align="center" type="submit" name="action">Save<i class="material-icons right">send</i></button><br>
         </div>
 
 
@@ -237,17 +236,19 @@
                     <th>Cost</th>
                 </tr>
               </thead>
+              <form name="frmfeed" enctype="multipart/form-data" method="post">
                 <tbody id="hahaha">
                 </tbody>
             </table>
+            </form>
 
-                <button style="margin-left:78%;" class="btn waves-effect waves-light" align="center" type="submit" name="action">Update<i class="material-icons right">send</i></button><br>
+                <button style="margin-left:78%;" onclick="delete_menu()" id="datepicker" class="btn waves-effect waves-light" align="center" type="submit" name="action">Update<i class="material-icons right">send</i></button><br>
         </div>
     </div>
 
     <script type="text/javascript">
         function my_add(){
-            $( "#haha" ).append( '<tr name="myname[]"><td style="width: 50%;text-align: center;"><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" type="text" name="item_name[]" class="validate"><label for="icon_prefix">Item Name</label></div></td><td style="width: 50%;text-align: center;"><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" type="text" name="cost[]" class="validate"><label for="icon_prefix">Cost of item per unit</label></div></td></tr>');
+            $( "#haha" ).append('<tr name="myname[]"><td style="width: 50%;text-align: center;"><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" type="text" name="item_name[]" class="validate"><label for="icon_prefix">Item Name</label></div></td><td style="width: 50%;text-align: center;"><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" type="text" name="cost[]" class="validate"><label for="icon_prefix">Cost of item per unit</label></div></td></tr>');
         }
 
         function my_minus(){
@@ -276,7 +277,79 @@
         };
 
         var length_update;
+        var update = {};
 
+        function delete_menu(){
+
+            // var itemnameupdate = [];
+            // var costupdate = [];
+            var updates = []
+            var elems = document.getElementsByName('myname2[]');
+            for(var i = 0; i < elems.length; ++i)
+            {
+                   
+                updates.push({"id": elems[i].childNodes[1].childNodes[0].childNodes[1].id, "cost": elems[i].childNodes[2].childNodes[0].childNodes[1].value , "deleted" : elems[i].childNodes[0].childNodes[0].childNodes[0].checked});
+            }
+            
+            update.updates = updates;
+
+
+            //AJAX Post Data To Your Server
+
+            var postDataObj = {
+                            url: "/shop/fetchmenu/",
+                            type: "post",
+                            data: JSON.stringify(update),
+                            success: function(response){
+                               if(response.status){
+                                   ajaxCallMenu();
+                                   $('#msg').html("<a style='color:green;'><b>Menu Updated Successfully</b></a>");
+                               }
+                               else{
+                                      $('#msg').html("<a style='color:red;'><b>Error Occured ! Retry Updation </b></a>");
+                               }
+                            }
+            }
+            console.log(postDataObj);       
+
+            $.ajax(postDataObj);
+        }
+
+        function add_menu(){
+            var updates = []
+            var elems = document.getElementsByName('myname[]');
+             updates.push({"item_name": elems[0].childNodes[1].childNodes[1].childNodes[3].value, "cost": elems[0].childNodes[3].childNodes[1].childNodes[3].value});
+            for(var i = 1; i < elems.length; ++i)
+            {
+                   
+                updates.push({"item_name": elems[i].childNodes[0].childNodes[0].childNodes[1].value, "cost": elems[i].childNodes[1].childNodes[0].childNodes[1].value});
+            }
+            
+            update.updates = updates;
+
+
+            console.log(update);
+            //AJAX Post Data To Your Server
+
+            var postDataObj = {
+                            url: "/shop/add_menu/",
+                            type: "post",
+                            data: JSON.stringify(update),
+                            success: function(response){
+                               if(response.status){
+                                   ajaxCallMenu();
+                                   $('#msg').html("<a style='color:green;'><b>Menu Added Successfully</b></a>");
+                               }
+                               else{
+                                      $('#msg').html("<a style='color:red;'><b>Error Occured ! Retry Again </b></a>");
+                               }
+                            }
+            }
+            console.log(postDataObj);       
+
+            $.ajax(postDataObj);
+
+        }
 
 
         function ajaxCallMenu(){
@@ -289,7 +362,7 @@
                         list = response.rlist;
                         length_update = list.length;
                         for(var i=0;i<list.length;i++){
-                            var data ='<tr><td><p><input type="checkbox" class="delete_checkbox" style="display:block;visibility:visible;" id="test'+i+'"/><label for="test'+i+'"></label></p></td><td><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" value="'+ list[i].item_name +'"" type="text" disabled><label for="icon_prefix"></label></div></td><td><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" value="'+ list[i].cost_per_plate +'"" type="text"><label for="icon_prefix"></label></div></td></tr>';
+                            var data ='<tr name = "myname2[]"><td><p><input type="checkbox" class="delete_checkbox" style="display:block;visibility:visible;" id="test'+i+'"/><label for="test'+i+'"></label></p></td><td><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="'+list[i].item_id+'" name="itemnameupdate[]" value="'+ list[i].item_name +'"" type="text" disabled><label for="icon_prefix"></label></div></td><td><div class="input-field col s12"><i class="material-icons prefix">account_circle</i><input id="icon_prefix" name="costupdate[]" value="'+ list[i].cost_per_plate +'"" type="text"><label for="icon_prefix"></label></div></td></tr>';
                                 document.getElementById('hahaha').innerHTML += data;
                         } 
 

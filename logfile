@@ -117,3 +117,13 @@ ERROR:  syntax error at or near "'msg'" at character 21
 STATEMENT:  insert into review ('msg' , 'cust_id' , 'shop_id' , 'time_stamp') values ('hello this is goutham' , '1' , '00001' , now())
 ERROR:  relation "food_items" does not exist at character 16
 STATEMENT:  select  * from food_items
+ERROR:  column "id" does not exist at character 28
+STATEMENT:  delete from fooditem where id = '00003'
+ERROR:  column "idea_id" does not exist at character 12
+HINT:  Perhaps you meant to reference the column "fooditem.item_id".
+STATEMENT:  select max(idea_id) from fooditem
+ERROR:  duplicate key value violates unique constraint "fooditem_pkey"
+DETAIL:  Key (item_id)=(184) already exists.
+STATEMENT:  insert into fooditem ( item_id, item_name, cost_per_plate, shop_id) values ('184', 'ndksl', '444', '00001')
+ERROR:  invalid input syntax for integer: "" at character 88
+STATEMENT:  insert into fooditem ( item_id, item_name, cost_per_plate, shop_id) values ('193', '', '', '00001')
