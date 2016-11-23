@@ -333,7 +333,8 @@
                       data += '<option value="'+j+'">'+typeofstatus(j)+'</option>'; 
                     }
                 }
-                data += '<option value="5">Delivered</option></td></tr>';
+                data += '<option value="5">Delivered</option>';
+                data += '<option value="9">Cancelled By Vendor</option></td></tr>';
                 document.getElementById('ongoing_orders').innerHTML += data;
               }
             

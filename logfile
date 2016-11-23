@@ -127,3 +127,38 @@ DETAIL:  Key (item_id)=(184) already exists.
 STATEMENT:  insert into fooditem ( item_id, item_name, cost_per_plate, shop_id) values ('184', 'ndksl', '444', '00001')
 ERROR:  invalid input syntax for integer: "" at character 88
 STATEMENT:  insert into fooditem ( item_id, item_name, cost_per_plate, shop_id) values ('193', '', '', '00001')
+ERROR:  cannot drop schema public because other objects depend on it
+DETAIL:  table django_migrations depends on schema public
+	table django_content_type depends on schema public
+	table auth_permission depends on schema public
+	table auth_group depends on schema public
+	table auth_group_permissions depends on schema public
+	table auth_user depends on schema public
+	table auth_user_groups depends on schema public
+	table auth_user_user_permissions depends on schema public
+	table django_admin_log depends on schema public
+	table station depends on schema public
+	table pnr depends on schema public
+	table stop depends on schema public
+	table train depends on schema public
+	table fooditem depends on schema public
+	table shop depends on schema public
+	table customer depends on schema public
+	table orders depends on schema public
+	table review depends on schema public
+	table django_session depends on schema public
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+STATEMENT:   DROP SCHEMA public;
+	
+	CREATE SCHEMA public
+	  AUTHORIZATION gouthamarukonda;
+	
+	GRANT ALL ON SCHEMA public TO gouthamarukonda;
+	GRANT ALL ON SCHEMA public TO public;
+	COMMENT ON SCHEMA public
+	  IS 'standard public schema';
+	
+	
+ERROR:  duplicate key value violates unique constraint "auth_user_username_key"
+DETAIL:  Key (username)=(admin) already exists.
+STATEMENT:  INSERT INTO "auth_user" ("password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined") VALUES ('pbkdf2_sha256$30000$epCcIPcGHA5v$WjVnI3NbbStPwCJu1bjAGmQKhW3931eYCJWoRFO/u0w=', NULL, true, 'admin', '', '', '', true, true, '2016-11-23T04:21:49.092914+00:00'::timestamptz) RETURNING "auth_user"."id"
